@@ -4,31 +4,33 @@ import { SafeAreaView, StyleSheet, Switch, Text, TouchableOpacity, View } from "
 export default function App() {
 
   const [darktheme, setDarktheme] = useState(false);
-  const [result, setResult] = useState('')
-
-  const calculation=(title)=>{
-    if (title=='C'){
-      setResult('')
-    } else if (title== 'DL'){
-      setResult(result.substring(0,result.length - 1))
-    } else if (title== '='){
-      const ans= Number(eval(result).toFixed(4)).toString()
+  const [result, setResult] = useState('');
+  const [prev, setPrev] = useState('');
+  const calculation = (title) => {
+    if (title == 'C') {
+      setResult('');
+      setPrev('');
+    } else if (title == 'DL') {
+      setResult(result.substring(0, result.length - 1))
+    } else if (title == '=') {
+      setPrev(result);
+      const ans = Number(eval(result).toFixed(4)).toString()
       setResult(ans)
-    }else setResult(result+title);
+    } else setResult(result + title);
   }
 
   const getColor = (light1, dark1) => darktheme ? dark1 : light1;
   const Btn = ({ title, type }) => (
     <TouchableOpacity
-      onPress={()=> calculation(title)}
-     style={{ 
-      padding: 20,
-      borderRadius: 10,
-      elevation: 5,
-      backgroundColor: '#A9A9A9',
-      margin: 5,
-      height: 80,
-      width: 80 }}>
+      onPress={() => calculation(title)}
+      style={{
+        padding: 20,
+        borderRadius: 50,
+        // elevation: 5,
+        backgroundColor: getBackcolor(type),
+        height: 80,
+        width: 80
+      }}>
       <Text style={{
         fontSize: 30,
         textAlignVertical: 'center',
@@ -40,13 +42,23 @@ export default function App() {
     </TouchableOpacity>
   )
 
-  const getBtnColor=(type)=>{
-    if (type=='right'){
-      return '#EB6363'
-    } else if (type=='button'){
-      return '#35FB06'
-    } else{
+  const getBtnColor = (type) => {
+    if (type == 'right') {
+      return '#FFF'
+    } else if (type == 'button') {
+      return '#22252D'
+    } else {
       return getColor(colors.dark, colors.light)
+    }
+  }
+
+  const getBackcolor= (type) => {
+    if (type == 'right'){
+      return 'orange'
+    } else if (type == 'button'){
+      return '#A9A9A9'
+    } else {
+      return '#F7F7F7'
     }
   }
 
@@ -62,60 +74,89 @@ export default function App() {
 
   return (
     <SafeAreaView>
-    <View style={{
-      height: '100%',
-      width: '100%',
-
-      paddingVertical: 20,
-      backgroundColor: getColor(colors.light, colors.dark)
-    }}>
-      <Switch
-        value={darktheme}
-        onValueChange={() => setDarktheme(!darktheme)}
-        thumbColor={getColor(colors.dark, colors.light)}
-        trackColor={{
-          true: colors.silver, false: colors.gray
-        }} />
-      <View>
-      <Text style={{
-        fontSize: 40,
-        color: getColor(colors.dark, colors.light),
-        paddingRight: 20,
-        paddingBottom: 10,
-        marginTop: 220,
-        textAlign: 'right',
-        alignItems: 'flex-end'
+      <View style={{
+        height: '100%',
+        width: '100%',
+        paddingVertical: 20,
+        justifyContent: 'space-between',
+        backgroundColor: getColor(colors.light, colors.dark)
       }}>
-        {result}</Text>
-      </View>
-      <View style={{ 
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        backgroundColor: getColor(colors.silver, colors.gray)
+        {/* <Switch
+          value={darktheme}
+          onValueChange={() => setDarktheme(!darktheme)}
+          thumbColor={getColor(colors.dark, colors.light)}
+          trackColor={{
+            true: colors.silver, false: colors.gray
+          }} /> */}
+        <View style={{
+          height: '35%',
+          justifyContent: 'center'
         }}>
-        <Btn title='C' type= "button"/>
-        <Btn title='DL' type= "button"/>
-        <Btn title='%' type= "button"/>
-        <Btn title='/' type= "right"/>
-        <Btn title='7' type= "numb"/>
-        <Btn title='8' type= "numb"/>
-        <Btn title='9' type= "numb"/>
-        <Btn title='*' type= "right"/>
-        <Btn title='4' type= "numb"/>
-        <Btn title='5' type= "numb"/>
-        <Btn title='6' type= "numb"/>
-        <Btn title='+' type= "right"/>
-        <Btn title='1' type= "numb"/>
-        <Btn title='2' type= "numb"/>
-        <Btn title='3' type= "numb"/>
-        <Btn title='-' type= "right"/>
-        <Btn title='00' type= "numb"/>
-        <Btn title='0' type= "numb"/>
-        <Btn title='.' type= "numb"/>
-        <Btn title='=' type= "right"/>
+          <Text style={{
+            fontSize: 24,
+            fontWeight: '300',
+            color: getColor(colors.dark, colors.light),
+            paddingRight: 20,
+            paddingBottom: 10,
+            textAlign: 'right',
+            alignItems: 'flex-end'
+          }}>
+            {prev}</Text>
+          <Text style={{
+            fontSize: 55,
+            fontWeight: '200',
+            color: getColor(colors.dark, colors.light),
+            paddingRight: 20,
+            paddingBottom: 10,
+            textAlign: 'right',
+            alignItems: 'flex-end'
+          }}>{result}</Text>
+        </View>
+        <View style={{
+          flexDirection: 'column',
+          height: '65%',
+          justifyContent: 'space-evenly',
+        }}>
+          <View style={styles.rowStyle}>
+            <Btn title='%' type="button" />
+            <Btn title='C' type="button" />
+            <Btn title='DL' type="button" />
+            <Btn title='/' type="right" />
+          </View>
+          <View style={styles.rowStyle}>
+            <Btn title='7' type="numb" />
+            <Btn title='8' type="numb" />
+            <Btn title='9' type="numb" />
+            <Btn title='*' type="right" />
+          </View>
+          <View style={styles.rowStyle}>
+            <Btn title='4' type="numb" />
+            <Btn title='5' type="numb" />
+            <Btn title='6' type="numb" />
+            <Btn title='+' type="right" />
+          </View>
+          <View style={styles.rowStyle}>
+            <Btn title='1' type="numb" />
+            <Btn title='2' type="numb" />
+            <Btn title='3' type="numb" />
+            <Btn title='-' type="right" />
+          </View>
+          <View style={styles.rowStyle}>
+            <Btn title='00' type="numb" />
+            <Btn title='0' type="numb" />
+            <Btn title='.' type="numb" />
+            <Btn title='=' type="right" />
+          </View>
+        </View>
       </View>
-    </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  rowStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  }
+});
