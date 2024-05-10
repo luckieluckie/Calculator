@@ -12,9 +12,11 @@ export default function App() {
       setPrev('');
     } else if (title == 'DL') {
       setResult(result.substring(0, result.length - 1))
-    } else if (title == '=') {
+    }
+    else if (title == '=') {
       setPrev(result);
-      const ans = Number(eval(result).toFixed(4)).toString()
+      var r= result.replace('×','*').replace('÷','/')
+      const ans = Number(eval(r).toFixed(4)).toString()
       setResult(ans)
     } else setResult(result + title);
   }
@@ -121,13 +123,13 @@ export default function App() {
             <Btn title='%' type="button" />
             <Btn title='C' type="button" />
             <Btn title='DL' type="button" />
-            <Btn title='/' type="right" />
+            <Btn title='÷' type="right" />
           </View>
           <View style={styles.rowStyle}>
             <Btn title='7' type="numb" />
             <Btn title='8' type="numb" />
             <Btn title='9' type="numb" />
-            <Btn title='*' type="right" />
+            <Btn title='×' type="right" />
           </View>
           <View style={styles.rowStyle}>
             <Btn title='4' type="numb" />
