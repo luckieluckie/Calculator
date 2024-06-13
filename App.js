@@ -1,164 +1,47 @@
-import { useState } from "react";
-import { SafeAreaView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import { HomeScreen } from "./screens/HomeScreen";
+import { SettingsScreen } from "./screens/SettingsScreen";
+import { AboutScreen } from "./screens/AboutScreen";
+import { Dailylife } from "./screens/Dailylife";
+import { Pulse } from "./screens/Pulse";
+import { Ionicons } from '@expo/vector-icons';
+import { BMI } from "./screens/BMI";
+
+const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-  const [darktheme, setDarktheme] = useState(false);
-  const [result, setResult] = useState('');
-  const [prev, setPrev] = useState('');
-  const calculation = (title) => {
-    if (title == 'C') {
-      setResult('');
-      setPrev('');
-    } else if (title == 'DL') {
-      setResult(result.substring(0, result.length - 1))
-    }
-    else if (title == '=') {
-      setPrev(result);
-      var r= result.replace('×','*').replace('÷','/')
-      const ans = Number(eval(r).toFixed(4)).toString()
-      setResult(ans)
-    } else setResult(result + title);
-  }
-
-  const getColor = (light1, dark1) => darktheme ? dark1 : light1;
-  const Btn = ({ title, type }) => (
-    <TouchableOpacity
-      onPress={() => calculation(title)}
-      style={{
-        padding: 20,
-        borderRadius: 50,
-        // elevation: 5,
-        backgroundColor: getBackcolor(type),
-        height: 80,
-        width: 80
-      }}>
-      <Text style={{
-        fontSize: 30,
-        textAlignVertical: 'center',
-        textAlign: 'center',
-        color: getBtnColor(type)
-      }}
-      >{title}
-      </Text>
-    </TouchableOpacity>
-  )
-
-  const getBtnColor = (type) => {
-    if (type == 'right') {
-      return '#FFF'
-    } else if (type == 'button') {
-      return '#22252D'
-    } else {
-      return getColor(colors.dark, colors.light)
-    }
-  }
-
-  const getBackcolor= (type) => {
-    if (type == 'right'){
-      return 'orange'
-    } else if (type == 'button'){
-      return '#A9A9A9'
-    } else {
-      return '#F7F7F7'
-    }
-  }
-
-
-  const colors = {
-    dark: '#22252D',
-    dark1: '#292B36',
-    gray: '#A9A9A9',
-    light: '#FFF',
-    light1: '#F7F7F7',
-    silver: '#C0C0C0'
-  }
-
   return (
-    <SafeAreaView>
-      <View style={{
-        height: '100%',
-        width: '100%',
-        paddingVertical: 20,
-        justifyContent: 'space-between',
-        backgroundColor: getColor(colors.light, colors.dark)
-      }}>
-        {/* <Switch
-          value={darktheme}
-          onValueChange={() => setDarktheme(!darktheme)}
-          thumbColor={getColor(colors.dark, colors.light)}
-          trackColor={{
-            true: colors.silver, false: colors.gray
-          }} /> */}
-        <View style={{
-          height: '35%',
-          justifyContent: 'center'
-        }}>
-          <Text style={{
-            fontSize: 24,
-            fontWeight: '300',
-            color: getColor(colors.dark, colors.light),
-            paddingRight: 20,
-            paddingBottom: 10,
-            textAlign: 'right',
-            alignItems: 'flex-end'
-          }}>
-            {prev}</Text>
-          <Text style={{
-            fontSize: 55,
-            fontWeight: '200',
-            color: getColor(colors.dark, colors.light),
-            paddingRight: 20,
-            paddingBottom: 10,
-            textAlign: 'right',
-            alignItems: 'flex-end'
-          }}>{result}</Text>
-        </View>
-        <View style={{
-          flexDirection: 'column',
-          height: '65%',
-          justifyContent: 'space-evenly',
-        }}>
-          <View style={styles.rowStyle}>
-            <Btn title='%' type="button" />
-            <Btn title='C' type="button" />
-            <Btn title='DL' type="button" />
-            <Btn title='÷' type="right" />
-          </View>
-          <View style={styles.rowStyle}>
-            <Btn title='7' type="numb" />
-            <Btn title='8' type="numb" />
-            <Btn title='9' type="numb" />
-            <Btn title='×' type="right" />
-          </View>
-          <View style={styles.rowStyle}>
-            <Btn title='4' type="numb" />
-            <Btn title='5' type="numb" />
-            <Btn title='6' type="numb" />
-            <Btn title='+' type="right" />
-          </View>
-          <View style={styles.rowStyle}>
-            <Btn title='1' type="numb" />
-            <Btn title='2' type="numb" />
-            <Btn title='3' type="numb" />
-            <Btn title='-' type="right" />
-          </View>
-          <View style={styles.rowStyle}>
-            <Btn title='00' type="numb" />
-            <Btn title='0' type="numb" />
-            <Btn title='.' type="numb" />
-            <Btn title='=' type="right" />
-          </View>
-        </View>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="Home" screenOptions={ ({ route }) => ({
+        drawerIcon: ({ color, focused, size }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = focused ? 'home-sharp' : 'home-outline';
+          } else if (route.name === 'Pulse rate') {
+            iconName = focused ? 'pulse' : 'pulse';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          } else if (route.name === 'About') {
+            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'BMI') {
+            iconName = focused ? 'body' : 'body-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        drawerActiveTintColor: '#FFA500',
+        drawerInactiveTintColor: '#000000',
+      }) }>
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Dailylife Calculation" component={Dailylife} />
+        <Drawer.Screen name="Pulse rate" component={Pulse} /> 
+        <Drawer.Screen name="BMI" component={BMI} />        
+        <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="About" component={AboutScreen} /> 
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  rowStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-  }
-});
