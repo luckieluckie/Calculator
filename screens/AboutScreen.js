@@ -9,11 +9,8 @@ export function AboutScreen(){
             margin:5,
             padding:10
            }}>
-             Calculator is just like a normal calculator that does simple calculations
-            like divison, multiplication, addition, subtractions but this one has some
-            special features that helps you in your daily life mathematical calculations
-            like Birthday, BMI, Pulse rate, etc.
-            These features can be excessed from the Dailylife calculation section. 
+             
+Introducing the all-in-one CALCULATOR app, your ultimate tool for precise calculations and health monitoring. Beyond standard arithmetic, CALCULATOR offers specialized features to seamlessly calculate your BMI and pulse rate.  Empower your everyday calculations and health insights with CALCULATOR and save your precious time.
            </Text>
         
 
